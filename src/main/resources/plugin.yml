@@ -1,0 +1,7 @@
+name: Erasure
+version: 1.0
+main: app.durkin.erasure.Erasure
+commands:
+  erasure:
+    description: Base command for Erasure plugin
+    usage: /erasure
