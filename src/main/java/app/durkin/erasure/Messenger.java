@@ -14,7 +14,25 @@ public class Messenger {
         Bukkit.broadcastMessage(PREFIX + "If this is a big mistake, have an admin use the command: /erasure cancel");
     }
 
-    public static void selfStatsMessage(CommandSender sender, int deaths) {
-        sender.sendMessage(PREFIX + "You have died " + deaths + " times.");
+    public static void statsMessage(CommandSender sender, int deaths, String name) {
+        String user;
+        if (sender.getName().equals(name)) {
+            user = "You";
+        } else {
+            user = name;
+        }
+        sender.sendMessage(PREFIX + user + " died " + deaths + " times.");
+    }
+
+    public static void invalidArguments(CommandSender sender) {
+        sender.sendMessage(PREFIX + "Invalid arguments for your command!");
+    }
+
+    public static void cancelResetMessage(CommandSender sender) {
+        Bukkit.broadcastMessage(PREFIX + sender.getName() + " has cancelled the server reset!");
+    }
+
+    public static void invalidPermissions(CommandSender sender) {
+        sender.sendMessage(PREFIX + "You do not have permission to perform this!");
     }
 }

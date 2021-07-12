@@ -7,14 +7,19 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 public class DeathListener implements Listener {
 
     private SQLite db;
+    private DeathTracker deathTracker;
 
-    public DeathListener(SQLite db) {
+    public DeathListener(SQLite db, DeathTracker deathTracker) {
         this.db = db;
+        this.deathTracker = deathTracker;
     }
 
     @EventHandler
     public void onDeath(PlayerDeathEvent event) {
-        this.db.addDeathToTable(event.getEntity().getDisplayName(), event.getEntity().getLastDamageCause().getEventName());
-        Messenger.sendDeathMessage(event.getEntity().getDisplayName());
+        if (!deathTracker.isServerResetting()) {
+            this.db.addDeathToTable(event.getEntity().getDisplayName(), event.getEntity().getLastDamageCause().getEventName());
+            deathTracker.toggleServerReset();
+            Messenger.sendDeathMessage(event.getEntity().getDisplayName());
+        }
     }
 }

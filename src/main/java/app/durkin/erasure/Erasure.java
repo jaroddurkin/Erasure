@@ -9,15 +9,17 @@ import java.io.File;
 public class Erasure extends JavaPlugin implements Listener {
 
     private SQLite db;
+    private DeathTracker deathTracker;
 
     @Override
     public void onEnable() {
         firstRunCreatePluginDir();
         this.db = new SQLite(this);
         this.db.load();
-        getServer().getPluginManager().registerEvents(new DeathListener(this.db), this);
+        this.deathTracker = new DeathTracker();
+        getServer().getPluginManager().registerEvents(new DeathListener(this.db, this.deathTracker), this);
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
-        getCommand("erasure").setExecutor(new CommandHandler(this.db));
+        getCommand("erasure").setExecutor(new CommandHandler(this.db, this.deathTracker));
         getLogger().info("Plugin enabled.");
     }
 
