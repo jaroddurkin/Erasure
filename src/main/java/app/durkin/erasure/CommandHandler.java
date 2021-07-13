@@ -8,10 +8,12 @@ public class CommandHandler implements CommandExecutor {
 
     private SQLite db;
     private DeathTracker deathTracker;
+    private ServerResetHandler serverResetHandler;
 
-    public CommandHandler(SQLite db, DeathTracker deathTracker) {
+    public CommandHandler(SQLite db, DeathTracker deathTracker, ServerResetHandler serverResetHandler) {
         this.db = db;
         this.deathTracker = deathTracker;
+        this.serverResetHandler = serverResetHandler;
     }
 
     @Override
@@ -41,6 +43,7 @@ public class CommandHandler implements CommandExecutor {
             if (!this.deathTracker.isServerResetting()) {
                 Messenger.invalidArguments(commandSender);
             } else {
+                this.serverResetHandler.cancelRestartTaskIfExists(this.deathTracker.getTaskId());
                 this.deathTracker.toggleServerReset();
                 Messenger.cancelResetMessage(commandSender);
             }

@@ -1,5 +1,9 @@
 package app.durkin.erasure;
 
+import org.bukkit.Bukkit;
+import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.scheduler.BukkitScheduler;
+
 import java.io.File;
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -42,6 +46,25 @@ public class ServerResetHandler {
             } catch(IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void scheduleServerRestart(Erasure plugin) {
+        BukkitScheduler scheduler = plugin.getServer().getScheduler();
+
+        int taskId = scheduler.scheduleSyncDelayedTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+                ConsoleCommandSender console = plugin.getServer().getConsoleSender();
+                Bukkit.dispatchCommand(console, "stop");
+            }
+        }, 2400);
+        this.deathTracker.setResetTaskId(taskId);
+    }
+
+    public void cancelRestartTaskIfExists(int taskId) {
+        if (taskId != -1) {
+            Bukkit.getServer().getScheduler().cancelTask(taskId);
         }
     }
 

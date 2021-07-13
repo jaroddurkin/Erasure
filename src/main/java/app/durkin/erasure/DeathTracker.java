@@ -3,9 +3,11 @@ package app.durkin.erasure;
 public class DeathTracker {
 
     private boolean serverReset;
+    private int taskId;
 
     public DeathTracker() {
         this.serverReset = false;
+        this.taskId = -1;
     }
 
     public boolean isServerResetting() {
@@ -18,5 +20,17 @@ public class DeathTracker {
         } else {
             this.serverReset = true;
         }
+    }
+
+    public int getTaskId() {
+        return this.taskId;
+    }
+
+    public void setResetTaskId(int taskId) {
+        this.taskId = taskId;
+    }
+
+    public void setDefaultResetTaskId() {
+        this.taskId = -1;
     }
 }
