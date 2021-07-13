@@ -20,6 +20,11 @@ public class SQLite extends Database {
             "`type` varchar(64) NOT NULL" +
             ");";
 
+    private String SQLiteWorldNameTable = "CREATE TABLE IF NOT EXISTS worlds (" +
+            "`id` INTEGER PRIMARY KEY," +
+            "`name` varchar(64) NOT NULL" +
+            ");";
+
     public Connection getSQLConnection() {
         File data = new File(plugin.getDataFolder(), this.dbName + ".db");
         if (!data.exists()) {
@@ -51,6 +56,7 @@ public class SQLite extends Database {
         try {
             Statement s = conn.createStatement();
             s.executeUpdate(SQLiteCreateDeathsTable);
+            s.executeUpdate(SQLiteWorldNameTable);
             s.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -98,6 +104,53 @@ public class SQLite extends Database {
             try {
                 if (ps != null) ps.close();
                 if (conn != null) conn.close();
+            } catch (SQLException e) {
+                plugin.getLogger().log(Level.SEVERE, "Could not close SQL", e);
+            }
+        }
+        return false;
+    }
+
+    public String getLatestWorldName() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            conn = getSQLConnection();
+            ps = conn.prepareStatement("SELECT * FROM worlds");
+            rs = ps.executeQuery();
+            String worldName = null;
+            while (rs.next()) {
+                worldName = rs.getString("name");
+            }
+            return worldName;
+        } catch(SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Could not execute statement", e);
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
+            } catch (SQLException e) {
+                plugin.getLogger().log(Level.SEVERE, "Could not close SQL", e);
+            }
+        }
+        return null;
+    }
+
+    public boolean addWorldNameToTable(String world) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            conn = getSQLConnection();
+            ps = conn.prepareStatement("INSERT INTO worlds (name) VALUES ('"+world+"');");
+            return ps.execute();
+        } catch(SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Could not execute statement", e);
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                if (rs != null) rs.close();
             } catch (SQLException e) {
                 plugin.getLogger().log(Level.SEVERE, "Could not close SQL", e);
             }
