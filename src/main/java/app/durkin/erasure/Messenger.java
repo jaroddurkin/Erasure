@@ -35,4 +35,16 @@ public class Messenger {
     public static void invalidPermissions(CommandSender sender) {
         sender.sendMessage(PREFIX + "You do not have permission to perform this!");
     }
+
+    public static void serverError(CommandSender sender) {
+        sender.sendMessage(PREFIX + "Internal server error processing your command.");
+    }
+
+    public static void configSuccess(CommandSender sender) {
+        sender.sendMessage(PREFIX + "Successfully set configuration!");
+    }
+
+    public static void configValue(CommandSender sender, String configValue) {
+        sender.sendMessage(PREFIX + "Value: " + configValue);
+    }
 }

@@ -5,10 +5,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.io.IOException;
 
 public class Erasure extends JavaPlugin implements Listener {
 
     private SQLite db;
+    private ConfigManager configManager;
     private DeathTracker deathTracker;
     private PropertyManager propertyManager;
     private ServerResetHandler resetHandler;
@@ -23,15 +25,34 @@ public class Erasure extends JavaPlugin implements Listener {
         String pluginPath = this.getDataFolder().getParentFile().getAbsolutePath();
         String serverPath = new File(pluginPath).getParentFile().getAbsolutePath();
 
+        String yamlPath = this.getDataFolder().getAbsolutePath() + System.getProperty("file.separator") + "erasure.yaml";
+        this.configManager = new ConfigManager(yamlPath);
+        if (!configManager.doesConfigExist()) {
+            try {
+                configManager.generateNewConfig();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         this.deathTracker = new DeathTracker();
         this.propertyManager = new PropertyManager(getPathToPropsFile());
-        this.resetHandler = new ServerResetHandler(this.db, this.deathTracker, this.propertyManager, serverPath);
-        this.resetHandler.removeOldWorldIfPresent();
+        this.resetHandler = new ServerResetHandler(this.db, this.deathTracker, this.propertyManager, serverPath, this.configManager);
+
+        try {
+            if (!configManager.doesConfigExist()) {
+                configManager.generateNewConfig();
+            }
+            if (configManager.getDeleteOnReset()) {
+                resetHandler.removeOldWorldIfPresent();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.resetHandler.addLatestWorldToTableIfNeeded();
 
         getServer().getPluginManager().registerEvents(new DeathListener(this.db, this.deathTracker, this.resetHandler, this), this);
         getServer().getPluginManager().registerEvents(new JoinListener(), this);
-        getCommand("erasure").setExecutor(new CommandHandler(this.db, this.deathTracker, this.resetHandler));
+        getCommand("erasure").setExecutor(new CommandHandler(this.db, this.deathTracker, this.resetHandler, this.configManager));
         getLogger().info("Plugin enabled.");
     }
 

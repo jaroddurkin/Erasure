@@ -15,12 +15,14 @@ public class ServerResetHandler {
     private DeathTracker deathTracker;
     private PropertyManager propertyManager;
     private String path;
+    private ConfigManager configManager;
 
-    public ServerResetHandler(SQLite db, DeathTracker deathTracker, PropertyManager propertyManager, String path) {
+    public ServerResetHandler(SQLite db, DeathTracker deathTracker, PropertyManager propertyManager, String path, ConfigManager configManager) {
         this.db = db;
         this.deathTracker = deathTracker;
         this.propertyManager = propertyManager;
         this.path = path;
+        this.configManager = configManager;
     }
 
     public void removeOldWorldIfPresent() {
@@ -51,14 +53,20 @@ public class ServerResetHandler {
 
     public void scheduleServerRestart(Erasure plugin) {
         BukkitScheduler scheduler = plugin.getServer().getScheduler();
-
+        long time;
+        try {
+            time = configManager.getResetTimeInMinutes() * 1200L;
+        } catch (IOException e) {
+            e.printStackTrace();
+            time = 2 * 1200L;
+        }
         int taskId = scheduler.scheduleSyncDelayedTask(plugin, new Runnable() {
             @Override
             public void run() {
                 ConsoleCommandSender console = plugin.getServer().getConsoleSender();
                 Bukkit.dispatchCommand(console, "stop");
             }
-        }, 2400);
+        }, time);
         this.deathTracker.setResetTaskId(taskId);
     }
 
