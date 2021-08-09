@@ -1,4 +1,4 @@
-package app.durkin.erasure;
+package app.durkin.erasure.config;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;

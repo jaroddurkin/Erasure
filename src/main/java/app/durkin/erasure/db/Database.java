@@ -1,4 +1,6 @@
-package app.durkin.erasure;
+package app.durkin.erasure.db;
+
+import app.durkin.erasure.Erasure;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

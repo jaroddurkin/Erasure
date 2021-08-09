@@ -1,8 +1,8 @@
 package app.durkin.erasure.commands;
 
-import app.durkin.erasure.DeathTracker;
-import app.durkin.erasure.Messenger;
-import app.durkin.erasure.ServerResetHandler;
+import app.durkin.erasure.features.DeathTracker;
+import app.durkin.erasure.events.Messenger;
+import app.durkin.erasure.features.ServerResetHandler;
 import org.bukkit.command.CommandSender;
 
 public class CancelCommand extends Command {

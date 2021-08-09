@@ -1,5 +1,9 @@
-package app.durkin.erasure;
+package app.durkin.erasure.events;
 
+import app.durkin.erasure.*;
+import app.durkin.erasure.db.SQLite;
+import app.durkin.erasure.features.DeathTracker;
+import app.durkin.erasure.features.ServerResetHandler;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;

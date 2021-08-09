@@ -1,4 +1,4 @@
-package app.durkin.erasure;
+package app.durkin.erasure.events;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

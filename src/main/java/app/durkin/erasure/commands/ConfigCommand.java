@@ -1,7 +1,7 @@
 package app.durkin.erasure.commands;
 
-import app.durkin.erasure.ConfigManager;
-import app.durkin.erasure.Messenger;
+import app.durkin.erasure.config.ConfigManager;
+import app.durkin.erasure.events.Messenger;
 import org.bukkit.command.CommandSender;
 
 import java.io.IOException;

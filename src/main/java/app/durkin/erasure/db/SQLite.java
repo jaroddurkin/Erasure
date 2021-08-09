@@ -1,4 +1,6 @@
-package app.durkin.erasure;
+package app.durkin.erasure.db;
+
+import app.durkin.erasure.Erasure;
 
 import java.io.File;
 import java.io.IOException;

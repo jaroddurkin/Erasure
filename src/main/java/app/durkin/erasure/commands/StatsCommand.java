@@ -1,7 +1,7 @@
 package app.durkin.erasure.commands;
 
-import app.durkin.erasure.Messenger;
-import app.durkin.erasure.SQLite;
+import app.durkin.erasure.events.Messenger;
+import app.durkin.erasure.db.SQLite;
 import org.bukkit.command.CommandSender;
 
 public class StatsCommand extends Command {

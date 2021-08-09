@@ -1,4 +1,4 @@
-package app.durkin.erasure;
+package app.durkin.erasure.features;
 
 public class DeathTracker {
 

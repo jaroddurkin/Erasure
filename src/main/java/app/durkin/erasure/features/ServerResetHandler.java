@@ -1,5 +1,9 @@
-package app.durkin.erasure;
+package app.durkin.erasure.features;
 
+import app.durkin.erasure.Erasure;
+import app.durkin.erasure.config.ConfigManager;
+import app.durkin.erasure.config.PropertyManager;
+import app.durkin.erasure.db.SQLite;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.scheduler.BukkitScheduler;

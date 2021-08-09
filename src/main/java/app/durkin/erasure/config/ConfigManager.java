@@ -1,4 +1,4 @@
-package app.durkin.erasure;
+package app.durkin.erasure.config;
 
 import org.yaml.snakeyaml.Yaml;
 
