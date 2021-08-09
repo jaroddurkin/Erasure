@@ -29,14 +29,14 @@ public class ConfigCommand extends Command {
             return false;
         }
 
-        if (args[1].equals("set")) {
+        if (args[1].equalsIgnoreCase("set")) {
             if (configSet()) {
                 Messenger.configSuccess(sender);
                 return true;
             }
             return false;
         }
-        if (args[1].equals("get")) {
+        if (args[1].equalsIgnoreCase("get")) {
             return configGet();
         }
 
@@ -114,6 +114,7 @@ public class ConfigCommand extends Command {
                 return false;
             }
             Messenger.configValue(sender, Boolean.toString(delete));
+            return true;
         }
 
         Messenger.invalidArguments(sender);
