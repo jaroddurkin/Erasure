@@ -59,7 +59,7 @@ public class Erasure extends JavaPlugin implements Listener {
         this.resetHandler.addLatestWorldToTableIfNeeded();
 
         getServer().getPluginManager().registerEvents(new DeathListener(this.db, this.deathTracker, this.resetHandler, this), this);
-        getServer().getPluginManager().registerEvents(new JoinListener(), this);
+        getServer().getPluginManager().registerEvents(new JoinListener(this.db), this);
         getCommand("erasure").setExecutor(new CommandHandler(this.db, this.deathTracker, this.resetHandler, this.configManager));
         getLogger().info("Plugin enabled.");
     }
