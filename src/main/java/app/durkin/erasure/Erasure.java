@@ -8,6 +8,7 @@ import app.durkin.erasure.events.DeathListener;
 import app.durkin.erasure.events.JoinListener;
 import app.durkin.erasure.features.DeathTracker;
 import app.durkin.erasure.features.ServerResetHandler;
+import app.durkin.erasure.features.StatisticsCalculator;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -22,6 +23,7 @@ public class Erasure extends JavaPlugin implements Listener {
     private DeathTracker deathTracker;
     private PropertyManager propertyManager;
     private ServerResetHandler resetHandler;
+    private StatisticsCalculator statisticsCalculator;
 
     @Override
     public void onEnable() {
@@ -45,6 +47,7 @@ public class Erasure extends JavaPlugin implements Listener {
         this.deathTracker = new DeathTracker();
         this.propertyManager = new PropertyManager(getPathToPropsFile());
         this.resetHandler = new ServerResetHandler(this.db, this.deathTracker, this.propertyManager, serverPath, this.configManager);
+        this.statisticsCalculator = new StatisticsCalculator(this.db);
 
         try {
             if (!configManager.doesConfigExist()) {
@@ -60,7 +63,7 @@ public class Erasure extends JavaPlugin implements Listener {
 
         getServer().getPluginManager().registerEvents(new DeathListener(this.db, this.deathTracker, this.resetHandler, this), this);
         getServer().getPluginManager().registerEvents(new JoinListener(this.db), this);
-        getCommand("erasure").setExecutor(new CommandHandler(this.db, this.deathTracker, this.resetHandler, this.configManager));
+        getCommand("erasure").setExecutor(new CommandHandler(this.db, this.deathTracker, this.resetHandler, this.configManager, this.statisticsCalculator));
         getLogger().info("Plugin enabled.");
     }
 

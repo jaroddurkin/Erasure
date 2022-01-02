@@ -5,6 +5,8 @@ import app.durkin.erasure.Erasure;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
 public class SQLite extends Database {
@@ -210,5 +212,29 @@ public class SQLite extends Database {
             }
         }
         return false;
+    }
+
+    public Map<String, String> getAllExistingPlayers() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Map<String, String> players = new HashMap<>();
+        try {
+            conn = getSQLConnection();
+            ps = conn.prepareStatement("SELECT * FROM players;");
+            while (rs.next()) {
+                players.put(rs.getString("player"), rs.getString("uuid"));
+            }
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Could not execute statement", e);
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                plugin.getLogger().log(Level.SEVERE, "Could not close SQL", e);
+            }
+        }
+        return players;
     }
 }
