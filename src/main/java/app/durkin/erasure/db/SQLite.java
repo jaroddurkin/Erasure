@@ -5,6 +5,8 @@ import app.durkin.erasure.Erasure;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
 public class SQLite extends Database {
@@ -25,6 +27,12 @@ public class SQLite extends Database {
     private String SQLiteWorldNameTable = "CREATE TABLE IF NOT EXISTS worlds (" +
             "`id` INTEGER PRIMARY KEY," +
             "`name` varchar(64) NOT NULL" +
+            ");";
+
+    private String SQLiteCreatePlayerTable = "CREATE TABLE IF NOT EXISTS players (" +
+            "`id` INTEGER PRIMARY KEY," +
+            "`name` varchar(32) NOT NULL," +
+            "`uuid` varchar(64) NOT NULL" +
             ");";
 
     public Connection getSQLConnection() {
@@ -59,6 +67,7 @@ public class SQLite extends Database {
             Statement s = conn.createStatement();
             s.executeUpdate(SQLiteCreateDeathsTable);
             s.executeUpdate(SQLiteWorldNameTable);
+            s.executeUpdate(SQLiteCreatePlayerTable);
             s.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -158,5 +167,74 @@ public class SQLite extends Database {
             }
         }
         return false;
+    }
+
+    public String getPlayerUUID(String playerName) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            conn = getSQLConnection();
+            ps = conn.prepareStatement("SELECT * FROM players WHERE name = '"+playerName+"';");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                return rs.getString("uuid");
+            }
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Could not execute query", e);
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                plugin.getLogger().log(Level.SEVERE, "Could not close SQL", e);
+            }
+        }
+        return null;
+    }
+
+    public boolean addPlayerToDB(String playerName, String playerUUID) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            conn = getSQLConnection();
+            ps = conn.prepareStatement("INSERT INTO players (name, uuid) VALUES ('"+playerName+"', '"+playerUUID+"');");
+            return ps.execute();
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Could not execute statement", e);
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                plugin.getLogger().log(Level.SEVERE, "Could not close SQL", e);
+            }
+        }
+        return false;
+    }
+
+    public Map<String, String> getAllExistingPlayers() {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Map<String, String> players = new HashMap<>();
+        try {
+            conn = getSQLConnection();
+            ps = conn.prepareStatement("SELECT * FROM players;");
+            while (rs.next()) {
+                players.put(rs.getString("player"), rs.getString("uuid"));
+            }
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Could not execute statement", e);
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                plugin.getLogger().log(Level.SEVERE, "Could not close SQL", e);
+            }
+        }
+        return players;
     }
 }

@@ -4,6 +4,7 @@ import app.durkin.erasure.config.ConfigManager;
 import app.durkin.erasure.db.SQLite;
 import app.durkin.erasure.features.DeathTracker;
 import app.durkin.erasure.features.ServerResetHandler;
+import app.durkin.erasure.features.StatisticsCalculator;
 import org.bukkit.command.CommandSender;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,6 +21,7 @@ public class CommandHandlerTest {
     DeathTracker deathTracker;
     ServerResetHandler resetHandler;
     ConfigManager configManager;
+    StatisticsCalculator statisticsCalculator;
 
     CommandHandler commandHandler;
 
@@ -31,8 +33,9 @@ public class CommandHandlerTest {
         this.deathTracker = mock(DeathTracker.class);
         this.resetHandler = mock(ServerResetHandler.class);
         this.configManager = mock(ConfigManager.class);
+        this.statisticsCalculator = mock(StatisticsCalculator.class);
 
-        this.commandHandler = new CommandHandler(this.db, this.deathTracker, this.resetHandler, this.configManager);
+        this.commandHandler = new CommandHandler(this.db, this.deathTracker, this.resetHandler, this.configManager, this.statisticsCalculator);
     }
 
     @Test

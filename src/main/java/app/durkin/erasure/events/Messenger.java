@@ -14,7 +14,7 @@ public class Messenger {
         Bukkit.broadcastMessage(PREFIX + "If this is a big mistake, have an admin use the command: /erasure cancel");
     }
 
-    public static void statsMessage(CommandSender sender, int deaths, String name) {
+    public static void statsMessage(CommandSender sender, int deaths, int hours, int minutes, String name) {
         String user;
         if (sender.getName().equals(name)) {
             user = "You";
@@ -22,6 +22,7 @@ public class Messenger {
             user = name;
         }
         sender.sendMessage(PREFIX + user + " died " + deaths + " times.");
+        sender.sendMessage(PREFIX + user + " played " + hours + " hours, " + minutes + " minutes.");
     }
 
     public static void invalidArguments(CommandSender sender) {
