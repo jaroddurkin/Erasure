@@ -23,7 +23,7 @@ public class StatsCommand extends Command {
         if (args.length == 1) {
             int numDeaths = this.db.getNumberOfDeathsForPlayer(sender.getName());
             int ticksPlayed = this.statisticsCalculator.getStatisticForSinglePlayer(sender.getName(), Statistic.PLAY_ONE_MINUTE);
-            int minutesPlayed = ((ticksPlayed / 20) / 60) / 60;
+            int minutesPlayed = ((ticksPlayed / 20) / 60);
             Messenger.statsMessage(sender, numDeaths, minutesPlayed / 60, minutesPlayed % 60, sender.getName());
             return true;
         } else if (args.length == 2) {

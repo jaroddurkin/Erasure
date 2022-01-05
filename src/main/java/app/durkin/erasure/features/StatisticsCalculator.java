@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.logging.Level;
 
 public class StatisticsCalculator {
 
@@ -20,11 +21,15 @@ public class StatisticsCalculator {
 
     public int getStatisticForSinglePlayer(String playerName, Statistic stat) {
         String playerUUID = this.db.getPlayerUUID(playerName);
+        if (playerUUID == null) {
+            return 0;
+        }
         Player player = Bukkit.getPlayer(UUID.fromString(playerUUID));
         if (player == null) {
             OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
             return offPlayer.getStatistic(stat);
         }
+        Bukkit.getLogger().log(Level.INFO, "Statistic returned: " + player.getStatistic(stat));
         return player.getStatistic(stat);
     }
 

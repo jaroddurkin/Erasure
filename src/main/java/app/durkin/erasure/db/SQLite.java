@@ -32,7 +32,7 @@ public class SQLite extends Database {
     private String SQLiteCreatePlayerTable = "CREATE TABLE IF NOT EXISTS players (" +
             "`id` INTEGER PRIMARY KEY," +
             "`name` varchar(32) NOT NULL," +
-            "`uuid` varchar(32) NOT NULL" +
+            "`uuid` varchar(64) NOT NULL" +
             ");";
 
     public Connection getSQLConnection() {
@@ -175,7 +175,7 @@ public class SQLite extends Database {
         ResultSet rs = null;
         try {
             conn = getSQLConnection();
-            ps = conn.prepareStatement("SELECT * FROM players WHERE player = '"+playerName+"';");
+            ps = conn.prepareStatement("SELECT * FROM players WHERE name = '"+playerName+"';");
             rs = ps.executeQuery();
             while (rs.next()) {
                 return rs.getString("uuid");
@@ -199,7 +199,7 @@ public class SQLite extends Database {
         ResultSet rs = null;
         try {
             conn = getSQLConnection();
-            ps = conn.prepareStatement("INSERT INTO players (player, uuid) VALUES ('"+playerName+"', '"+playerUUID+"');");
+            ps = conn.prepareStatement("INSERT INTO players (name, uuid) VALUES ('"+playerName+"', '"+playerUUID+"');");
             return ps.execute();
         } catch (SQLException e) {
             plugin.getLogger().log(Level.SEVERE, "Could not execute statement", e);
