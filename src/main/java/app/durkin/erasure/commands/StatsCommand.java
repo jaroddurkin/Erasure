@@ -24,13 +24,15 @@ public class StatsCommand extends Command {
             int numDeaths = this.db.getNumberOfDeathsForPlayer(sender.getName());
             int ticksPlayed = this.statisticsCalculator.getStatisticForSinglePlayer(sender.getName(), Statistic.PLAY_ONE_MINUTE);
             int minutesPlayed = ((ticksPlayed / 20) / 60);
-            Messenger.statsMessage(sender, numDeaths, minutesPlayed / 60, minutesPlayed % 60, sender.getName());
+            int mobsKilled = this.statisticsCalculator.getStatisticForSinglePlayer(sender.getName(), Statistic.MOB_KILLS);
+            Messenger.statsMessage(sender, numDeaths, minutesPlayed / 60, minutesPlayed % 60, mobsKilled, sender.getName());
             return true;
         } else if (args.length == 2) {
             int numDeaths = this.db.getNumberOfDeathsForPlayer(args[1]);
             int ticksPlayed = this.statisticsCalculator.getStatisticForSinglePlayer(args[1], Statistic.PLAY_ONE_MINUTE);
             int minutesPlayed = ((ticksPlayed / 20) / 60) / 60;
-            Messenger.statsMessage(sender, numDeaths, minutesPlayed / 60, minutesPlayed % 60, args[1]);
+            int mobsKilled = this.statisticsCalculator.getStatisticForSinglePlayer(sender.getName(), Statistic.MOB_KILLS);
+            Messenger.statsMessage(sender, numDeaths, minutesPlayed / 60, minutesPlayed % 60, mobsKilled, args[1]);
             return true;
         } else {
             Messenger.invalidArguments(sender);
