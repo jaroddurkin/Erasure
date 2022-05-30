@@ -2,6 +2,7 @@ package app.durkin.erasure.events;
 
 import app.durkin.erasure.*;
 import app.durkin.erasure.db.SQLite;
+import app.durkin.erasure.features.CSVGenerator;
 import app.durkin.erasure.features.DeathTracker;
 import app.durkin.erasure.features.ServerResetHandler;
 import org.bukkit.event.EventHandler;
@@ -28,6 +29,7 @@ public class DeathListener implements Listener {
             this.db.addDeathToTable(event.getEntity().getDisplayName(), event.getEntity().getLastDamageCause().getEventName());
             deathTracker.toggleServerReset();
             serverResetHandler.scheduleServerRestart(this.plugin);
+            CSVGenerator.generateStatistics(this.db);
             Messenger.sendDeathMessage(event.getEntity().getDisplayName());
         }
     }
