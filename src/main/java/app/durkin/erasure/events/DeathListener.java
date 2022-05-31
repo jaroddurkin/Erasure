@@ -29,8 +29,8 @@ public class DeathListener implements Listener {
             this.db.addDeathToTable(event.getEntity().getDisplayName(), event.getEntity().getLastDamageCause().getEventName());
             deathTracker.toggleServerReset();
             serverResetHandler.scheduleServerRestart(this.plugin);
-            CSVGenerator.generateStatistics(this.db);
             Messenger.sendDeathMessage(event.getEntity().getDisplayName());
+            CSVGenerator.generateStatistics(this.db);
         }
     }
 }
