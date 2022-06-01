@@ -222,8 +222,9 @@ public class SQLite extends Database {
         try {
             conn = getSQLConnection();
             ps = conn.prepareStatement("SELECT * FROM players;");
+            rs = ps.executeQuery();
             while (rs.next()) {
-                players.put(rs.getString("player"), rs.getString("uuid"));
+                players.put(rs.getString("name"), rs.getString("uuid"));
             }
         } catch (SQLException e) {
             plugin.getLogger().log(Level.SEVERE, "Could not execute statement", e);

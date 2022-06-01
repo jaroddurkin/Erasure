@@ -11,7 +11,7 @@ public class CSVGenerator {
 
     public static void generateStatistics(SQLite db) {
         StatisticsCalculator stats = new StatisticsCalculator(db);
-        String csvName = "data_" + db.getLatestWorldName() + ".csv";
+        String csvName = "plugins/Erasure/data_" + db.getLatestWorldName() + ".csv";
         try {
             FileWriter csvWriter = new FileWriter(csvName);
             csvWriter.write("uuid,name,deaths,playTime,kills\n");

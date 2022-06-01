@@ -30,7 +30,6 @@ public class DeathListener implements Listener {
             deathTracker.toggleServerReset();
             serverResetHandler.scheduleServerRestart(this.plugin);
             Messenger.sendDeathMessage(event.getEntity().getDisplayName());
-            CSVGenerator.generateStatistics(this.db);
         }
     }
 }

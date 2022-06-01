@@ -6,6 +6,7 @@ import app.durkin.erasure.config.PropertyManager;
 import app.durkin.erasure.db.SQLite;
 import app.durkin.erasure.events.DeathListener;
 import app.durkin.erasure.events.JoinListener;
+import app.durkin.erasure.features.CSVGenerator;
 import app.durkin.erasure.features.DeathTracker;
 import app.durkin.erasure.features.ServerResetHandler;
 import app.durkin.erasure.features.StatisticsCalculator;
@@ -70,6 +71,9 @@ public class Erasure extends JavaPlugin implements Listener {
     @Override
     public void onDisable() {
         this.resetHandler.setNewWorldNameIfNeeded();
+        if (this.deathTracker.isServerResetting()) {
+            CSVGenerator.generateStatistics(this.db);
+        }
         HandlerList.unregisterAll((JavaPlugin) this);
         getLogger().info("Plugin disabled.");
     }
