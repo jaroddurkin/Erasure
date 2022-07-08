@@ -75,6 +75,18 @@ public class ConfigCommand extends Command {
                 }
                 return true;
             }
+        } else if (args[2].equalsIgnoreCase("messageOnDeath")) {
+            if (args[3].equalsIgnoreCase("true") || args[3].equalsIgnoreCase("false")) {
+                try {
+                    boolean message = args[3].equalsIgnoreCase("true");
+                    this.configManager.setMessageOnDeath(message);
+                } catch(IOException e) {
+                    e.printStackTrace();;
+                    Messenger.serverError(sender);
+                    return false;
+                }
+                return true;
+            }
         }
         Messenger.invalidArguments(sender);
         return false;
@@ -114,6 +126,17 @@ public class ConfigCommand extends Command {
                 return false;
             }
             Messenger.configValue(sender, Boolean.toString(delete));
+            return true;
+        } else if (args[2].equalsIgnoreCase("messageOnDeath")) {
+            boolean message;
+            try {
+                message = this.configManager.getMessageOnDeath();
+            } catch(IOException e) {
+                e.printStackTrace();
+                Messenger.serverError(sender);
+                return false;
+            }
+            Messenger.configValue(sender, Boolean.toString(message));
             return true;
         }
 

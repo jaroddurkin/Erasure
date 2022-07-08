@@ -36,8 +36,8 @@ public class Erasure extends JavaPlugin implements Listener {
         String pluginPath = this.getDataFolder().getParentFile().getAbsolutePath();
         String serverPath = new File(pluginPath).getParentFile().getAbsolutePath();
 
-        String yamlPath = this.getDataFolder().getAbsolutePath() + System.getProperty("file.separator") + "erasure.yaml";
-        this.configManager = new ConfigManager(yamlPath);
+        String jsonPath = this.getDataFolder().getAbsolutePath() + System.getProperty("file.separator") + "erasure.json";
+        this.configManager = new ConfigManager(jsonPath);
         if (!configManager.doesConfigExist()) {
             try {
                 configManager.generateNewConfig();
@@ -62,7 +62,7 @@ public class Erasure extends JavaPlugin implements Listener {
         }
         this.resetHandler.addLatestWorldToTableIfNeeded();
 
-        getServer().getPluginManager().registerEvents(new DeathListener(this.db, this.deathTracker, this.resetHandler, this), this);
+        getServer().getPluginManager().registerEvents(new DeathListener(this.db, this.deathTracker, this.resetHandler, this, this.configManager), this);
         getServer().getPluginManager().registerEvents(new JoinListener(this.db), this);
         getCommand("erasure").setExecutor(new CommandHandler(this.db, this.deathTracker, this.resetHandler, this.configManager, this.statisticsCalculator));
         getLogger().info("Plugin enabled.");
