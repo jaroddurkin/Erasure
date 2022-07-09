@@ -35,7 +35,7 @@ public class DeathListener implements Listener {
             deathTracker.toggleServerReset();
             serverResetHandler.scheduleServerRestart(this.plugin);
             if (configManager.getMessageOnDeath()) {
-                Messenger.sendDeathMessage(event.getEntity().getDisplayName());
+                Messenger.sendDeathMessage(event.getEntity().getDisplayName(), false);
             }
         }
     }
