@@ -1,5 +1,6 @@
 package app.durkin.erasure.commands;
 
+import app.durkin.erasure.Erasure;
 import app.durkin.erasure.config.ConfigManager;
 import app.durkin.erasure.db.SQLite;
 import app.durkin.erasure.features.DeathTracker;
@@ -16,13 +17,15 @@ public class CommandHandler implements CommandExecutor {
     private ServerResetHandler serverResetHandler;
     private ConfigManager configManager;
     private StatisticsCalculator statisticsCalculator;
+    private Erasure plugin;
 
-    public CommandHandler(SQLite db, DeathTracker deathTracker, ServerResetHandler serverResetHandler, ConfigManager configManager, StatisticsCalculator statisticsCalculator) {
+    public CommandHandler(SQLite db, DeathTracker deathTracker, ServerResetHandler serverResetHandler, ConfigManager configManager, StatisticsCalculator statisticsCalculator, Erasure plugin) {
         this.db = db;
         this.deathTracker = deathTracker;
         this.serverResetHandler = serverResetHandler;
         this.configManager = configManager;
         this.statisticsCalculator = statisticsCalculator;
+        this.plugin = plugin;
     }
 
     @Override
@@ -41,6 +44,10 @@ public class CommandHandler implements CommandExecutor {
         }
         if (parentCommand.equals("config")) {
             ConfigCommand commandHandler = new ConfigCommand(commandSender, args, this.configManager);
+            return commandHandler.handleCommand();
+        }
+        if (parentCommand.equals("reset")) {
+            ResetCommand commandHandler = new ResetCommand(commandSender, args, this.deathTracker, this.serverResetHandler, this.plugin);
             return commandHandler.handleCommand();
         }
         return false;

@@ -22,6 +22,7 @@ public class ConfigManager {
         Map<String, Object> newConfig = new HashMap<>();
         newConfig.put("resetTime", 2);
         newConfig.put("deleteOnReset", true);
+        newConfig.put("messageOnDeath", true);
         setConfig(newConfig);
     }
 
@@ -35,6 +36,11 @@ public class ConfigManager {
         return (boolean) config.getOrDefault("deleteOnReset", null);
     }
 
+    public boolean getMessageOnDeath() throws IOException {
+        Map<String, Object> config = readConfig();
+        return (boolean) config.getOrDefault("messageOnDeath", null);
+    }
+
     public void setResetTimeInMinutes(int time) throws IOException {
         Map<String, Object> config = readConfig();
         config.put("resetTime", time);
@@ -44,6 +50,12 @@ public class ConfigManager {
     public void setDeleteOnReset(boolean reset) throws IOException {
         Map<String, Object> config = readConfig();
         config.put("deleteOnReset", reset);
+        setConfig(config);
+    }
+
+    public void setMessageOnDeath(boolean message) throws IOException {
+        Map<String, Object> config = readConfig();
+        config.put("messageOnDeath", message);
         setConfig(config);
     }
 

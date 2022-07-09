@@ -1,5 +1,6 @@
 package app.durkin.erasure.commands;
 
+import app.durkin.erasure.Erasure;
 import app.durkin.erasure.config.ConfigManager;
 import app.durkin.erasure.db.SQLite;
 import app.durkin.erasure.features.DeathTracker;
@@ -24,6 +25,7 @@ public class CommandHandlerTest {
     StatisticsCalculator statisticsCalculator;
 
     CommandHandler commandHandler;
+    Erasure plugin;
 
     @BeforeEach
     void setUp() {
@@ -34,8 +36,9 @@ public class CommandHandlerTest {
         this.resetHandler = mock(ServerResetHandler.class);
         this.configManager = mock(ConfigManager.class);
         this.statisticsCalculator = mock(StatisticsCalculator.class);
+        this.plugin = mock(Erasure.class);
 
-        this.commandHandler = new CommandHandler(this.db, this.deathTracker, this.resetHandler, this.configManager, this.statisticsCalculator);
+        this.commandHandler = new CommandHandler(this.db, this.deathTracker, this.resetHandler, this.configManager, this.statisticsCalculator, this.plugin);
     }
 
     @Test
