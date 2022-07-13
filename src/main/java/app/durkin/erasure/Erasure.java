@@ -36,6 +36,7 @@ public class Erasure extends JavaPlugin implements Listener {
         String pluginPath = this.getDataFolder().getParentFile().getAbsolutePath();
         String serverPath = new File(pluginPath).getParentFile().getAbsolutePath();
 
+        // begin generating configuration file for plugin
         String jsonPath = this.getDataFolder().getAbsolutePath() + System.getProperty("file.separator") + "erasure.json";
         this.configManager = new ConfigManager(jsonPath);
         if (!configManager.doesConfigExist()) {
@@ -45,15 +46,14 @@ public class Erasure extends JavaPlugin implements Listener {
                 e.printStackTrace();
             }
         }
+        // initialize other features needed in application
         this.deathTracker = new DeathTracker();
         this.propertyManager = new PropertyManager(getPathToPropsFile());
         this.resetHandler = new ServerResetHandler(this.db, this.deathTracker, this.propertyManager, serverPath, this.configManager);
         this.statisticsCalculator = new StatisticsCalculator(this.db);
 
+        // remove world if we went through a reset on last close
         try {
-            if (!configManager.doesConfigExist()) {
-                configManager.generateNewConfig();
-            }
             if (configManager.getDeleteOnReset()) {
                 resetHandler.removeOldWorldIfPresent();
             }
@@ -62,6 +62,7 @@ public class Erasure extends JavaPlugin implements Listener {
         }
         this.resetHandler.addLatestWorldToTableIfNeeded();
 
+        // register everything else before starting plugin
         getServer().getPluginManager().registerEvents(new DeathListener(this.db, this.deathTracker, this.resetHandler, this, this.configManager), this);
         getServer().getPluginManager().registerEvents(new JoinListener(this.db), this);
         getCommand("erasure").setExecutor(new CommandHandler(this.db, this.deathTracker, this.resetHandler, this.configManager, this.statisticsCalculator, this));
@@ -70,6 +71,7 @@ public class Erasure extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
+        // generate new world name and set in properties file so server is reset
         this.resetHandler.setNewWorldNameIfNeeded();
         if (this.deathTracker.isServerResetting()) {
             CSVGenerator.generateStatistics(this.db);

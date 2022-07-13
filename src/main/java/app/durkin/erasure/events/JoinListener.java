@@ -15,6 +15,7 @@ public class JoinListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+        // each player is added to a DB row to track any stats for offline players
         if (this.db.getPlayerUUID(event.getPlayer().getName()) == null) {
             this.db.addPlayerToDB(event.getPlayer().getName(), event.getPlayer().getUniqueId().toString());
         }

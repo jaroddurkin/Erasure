@@ -59,12 +59,14 @@ public class ConfigManager {
         setConfig(config);
     }
 
+    // config is read from disk every time access is needed
     private Map<String, Object> readConfig() throws IOException {
         Yaml yaml = new Yaml();
         InputStream inputStream = new FileInputStream(this.path);
         return yaml.load(inputStream);
     }
 
+    // config is written to disk every time config is changed
     private void setConfig(Map<String, Object> newConfig) throws IOException {
         Yaml yaml = new Yaml();
         FileWriter writer = new FileWriter(this.path);

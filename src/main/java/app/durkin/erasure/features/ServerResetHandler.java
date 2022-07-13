@@ -30,6 +30,7 @@ public class ServerResetHandler {
     }
 
     public void removeOldWorldIfPresent() {
+        // wil erase entire world from disk on server startup
         String worldName = this.propertyManager.getWorldName();
         String latestWorld = this.db.getLatestWorldName();
         if (latestWorld != null && !worldName.equals(latestWorld)) {
@@ -38,6 +39,7 @@ public class ServerResetHandler {
     }
 
     public void addLatestWorldToTableIfNeeded() {
+        // world names are tracked so we can delete proper folders
         String worldName = this.propertyManager.getWorldName();
         String latestWorld = this.db.getLatestWorldName();
         if (latestWorld == null || !worldName.equals(latestWorld)) {
@@ -46,6 +48,7 @@ public class ServerResetHandler {
     }
 
     public void setNewWorldNameIfNeeded() {
+        // only sets world name if server is resetting
         if (this.deathTracker.isServerResetting()) {
             try {
                 this.propertyManager.setWorldName(worldNameGenerator());
@@ -59,15 +62,18 @@ public class ServerResetHandler {
         BukkitScheduler scheduler = plugin.getServer().getScheduler();
         long time;
         try {
+            // bukkit scheduler needs time in a long and in ticks
             time = configManager.getResetTimeInMinutes() * 1200L;
         } catch (IOException e) {
             e.printStackTrace();
+            // if error, set to default of two minutes
             time = 2 * 1200L;
         }
         int taskId = scheduler.scheduleSyncDelayedTask(plugin, new Runnable() {
             @Override
             public void run() {
                 ConsoleCommandSender console = plugin.getServer().getConsoleSender();
+                // stop command will trigger a server reset
                 Bukkit.dispatchCommand(console, "stop");
             }
         }, time);
@@ -98,6 +104,7 @@ public class ServerResetHandler {
     }
 
     private void worldDeletion(File world) throws IOException {
+        // worlds are stored in directories so we only want to search for dirs
         if (world.isDirectory()) {
             File[] entries = world.listFiles();
             if (entries != null) {
@@ -112,6 +119,7 @@ public class ServerResetHandler {
     }
 
     private String worldNameGenerator() {
+        // world names from this plugin are randomly generated cause deletion is optional
         SecureRandom random = new SecureRandom();
         byte bytes[] = new byte[16];
         random.nextBytes(bytes);
