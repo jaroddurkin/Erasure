@@ -22,6 +22,7 @@ public class DeathTracker {
         }
     }
 
+    // bukkit uses task id's to track any scheduled commands, we save this in case it needs to be cancelled
     public int getTaskId() {
         return this.taskId;
     }

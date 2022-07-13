@@ -26,6 +26,7 @@ public class StatisticsCalculator {
         }
         Player player = Bukkit.getPlayer(UUID.fromString(playerUUID));
         if (player == null) {
+            // offline players are a separate object from online in bukkit
             OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(playerUUID));
             return offPlayer.getStatistic(stat);
         }
@@ -39,6 +40,7 @@ public class StatisticsCalculator {
         for (String key : allPlayers.keySet()) {
             Player player = Bukkit.getPlayer(UUID.fromString(allPlayers.get(key)));
             if (player == null) {
+                // offline players are a separate object from online in bukkit
                 OfflinePlayer offPlayer = Bukkit.getOfflinePlayer(UUID.fromString(allPlayers.get(key)));
                 statistic.put(key, offPlayer.getStatistic(stat));
             } else {

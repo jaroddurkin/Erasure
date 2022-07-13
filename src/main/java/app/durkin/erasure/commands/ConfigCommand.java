@@ -53,6 +53,7 @@ public class ConfigCommand extends Command {
             return false;
         }
         if (args[2].equalsIgnoreCase("resetTime")) {
+            // reset time is given as an integer representing number of minutes
             if (isNumber(args[3]) && Integer.parseInt(args[3]) > -1 && Integer.parseInt(args[3]) < 1441) {
                 try {
                     this.configManager.setResetTimeInMinutes(Integer.parseInt(args[3]));
@@ -66,6 +67,7 @@ public class ConfigCommand extends Command {
         } else if (args[2].equalsIgnoreCase("deleteWorld")) {
             if (args[3].equalsIgnoreCase("true") || args[3].equalsIgnoreCase("false")) {
                 try {
+                    // set value only true or false
                     boolean reset = args[3].equalsIgnoreCase("true");
                     this.configManager.setDeleteOnReset(reset);
                 } catch(IOException e) {
@@ -78,6 +80,7 @@ public class ConfigCommand extends Command {
         } else if (args[2].equalsIgnoreCase("messageOnDeath")) {
             if (args[3].equalsIgnoreCase("true") || args[3].equalsIgnoreCase("false")) {
                 try {
+                    // set value only true or false
                     boolean message = args[3].equalsIgnoreCase("true");
                     this.configManager.setMessageOnDeath(message);
                 } catch(IOException e) {

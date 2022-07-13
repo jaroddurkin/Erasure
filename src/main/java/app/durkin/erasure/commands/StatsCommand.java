@@ -23,6 +23,7 @@ public class StatsCommand extends Command {
         if (args.length == 1) {
             int numDeaths = this.db.getNumberOfDeathsForPlayer(sender.getName());
             int ticksPlayed = this.statisticsCalculator.getStatisticForSinglePlayer(sender.getName(), Statistic.PLAY_ONE_MINUTE);
+            // convert number of ticks to minutes
             int minutesPlayed = ((ticksPlayed / 20) / 60);
             int mobsKilled = this.statisticsCalculator.getStatisticForSinglePlayer(sender.getName(), Statistic.MOB_KILLS);
             Messenger.statsMessage(sender, numDeaths, minutesPlayed / 60, minutesPlayed % 60, mobsKilled, sender.getName());
@@ -30,6 +31,7 @@ public class StatsCommand extends Command {
         } else if (args.length == 2) {
             int numDeaths = this.db.getNumberOfDeathsForPlayer(args[1]);
             int ticksPlayed = this.statisticsCalculator.getStatisticForSinglePlayer(args[1], Statistic.PLAY_ONE_MINUTE);
+            // convert number of ticks to minutes
             int minutesPlayed = ((ticksPlayed / 20) / 60) / 60;
             int mobsKilled = this.statisticsCalculator.getStatisticForSinglePlayer(sender.getName(), Statistic.MOB_KILLS);
             Messenger.statsMessage(sender, numDeaths, minutesPlayed / 60, minutesPlayed % 60, mobsKilled, args[1]);

@@ -26,12 +26,14 @@ public class PropertyManager {
         if (props == null) {
             throw new IOException();
         }
+        // set new world name to generate world and act as server reset
         props.setProperty("level-name", worldName);
 
         FileOutputStream outputStream = new FileOutputStream(this.path);
         props.store(outputStream, null);
     }
 
+    // reads the minecraft server.properties file
     private Properties readPropertiesFile() {
         FileInputStream inputStream = null;
         Properties properties = null;
