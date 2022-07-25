@@ -31,11 +31,14 @@ public class DeathListener implements Listener {
     @EventHandler
     public void onDeath(PlayerDeathEvent event) throws IOException {
         if (!deathTracker.isServerResetting()) {
-            this.db.addDeathToTable(event.getEntity().getDisplayName(), event.getEntity().getLastDamageCause().getEventName());
-            deathTracker.toggleServerReset();
-            serverResetHandler.scheduleServerRestart(this.plugin);
-            if (configManager.getMessageOnDeath()) {
-                Messenger.sendDeathMessage(event.getEntity().getDisplayName(), false);
+            String worldName = this.db.getLatestWorldName();
+            this.db.addDeathToTable(event.getEntity().getDisplayName(), event.getEntity().getLastDamageCause().getEventName(), worldName);
+            if (this.deathTracker.registerDeath()) {
+                deathTracker.toggleServerReset();
+                serverResetHandler.scheduleServerRestart(this.plugin);
+                if (configManager.getMessageOnDeath()) {
+                    Messenger.sendDeathMessage(event.getEntity().getDisplayName(), false);
+                }
             }
         }
     }

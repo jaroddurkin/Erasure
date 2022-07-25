@@ -4,14 +4,27 @@ public class DeathTracker {
 
     private boolean serverReset;
     private int taskId;
+    private int maxDeaths;
+    private int numDeaths;
 
-    public DeathTracker() {
+    public DeathTracker(int maxDeaths, int numDeaths) {
         this.serverReset = false;
         this.taskId = -1;
+        this.maxDeaths = maxDeaths;
+        this.numDeaths = numDeaths;
     }
 
     public boolean isServerResetting() {
         return this.serverReset;
+    }
+
+    public boolean registerDeath() {
+        this.numDeaths++;
+        if (this.numDeaths >= this.maxDeaths) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void toggleServerReset() {

@@ -51,6 +51,13 @@ public class ConfigCommandTest {
     }
 
     @Test
+    void successful_get_fourth_prop() {
+        String[] args = new String[]{"config", "get", "maxDeaths"};
+        ConfigCommand commandHandler = new ConfigCommand(this.sender, args, this.configManager);
+        assertTrue(commandHandler.handleCommand());
+    }
+
+    @Test
     void successful_get_case_insensitive() {
         String[] args = new String[]{"config", "gEt", "Deleteworld"};
         ConfigCommand commandHandler = new ConfigCommand(this.sender, args, this.configManager);
@@ -74,6 +81,13 @@ public class ConfigCommandTest {
     @Test
     void successful_set_third_prop() {
         String[] args = new String[]{"config", "set", "messageOnDeath", "false"};
+        ConfigCommand commandHandler = new ConfigCommand(this.sender, args, this.configManager);
+        assertTrue(commandHandler.handleCommand());
+    }
+
+    @Test
+    void successful_set_fourth_prop() {
+        String[] args = new String[]{"config", "set", "maxDeaths", "5"};
         ConfigCommand commandHandler = new ConfigCommand(this.sender, args, this.configManager);
         assertTrue(commandHandler.handleCommand());
     }
