@@ -1,0 +1,13 @@
+kind: pipeline
+type: docker
+name: compile
+
+steps:
+- name: test
+  image: maven
+  commands:
+  - mvn test
+- name: build
+  image: maven
+  commands:
+  - mvn package
