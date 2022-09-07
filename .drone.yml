@@ -11,3 +11,12 @@ steps:
   image: maven
   commands:
   - mvn package
+- name: deploy
+  image: plugins/docker
+  settings:
+    repo: docker.durkin.app/erasure
+    registry: docker.durkin.app
+    username:
+      from_secret: docker_username
+    password:
+      from_secret: docker_password
