@@ -47,7 +47,14 @@ public class Erasure extends JavaPlugin implements Listener {
             }
         }
         // initialize other features needed in application
-        this.deathTracker = new DeathTracker();
+        int maxNumDeaths = 1;
+        try {
+            maxNumDeaths = this.configManager.getMaxNumberOfDeaths();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        int currentNumDeaths = this.db.getNumberOfDeathsForWorld(this.db.getLatestWorldName());
+        this.deathTracker = new DeathTracker(maxNumDeaths, currentNumDeaths);
         this.propertyManager = new PropertyManager(getPathToPropsFile());
         this.resetHandler = new ServerResetHandler(this.db, this.deathTracker, this.propertyManager, serverPath, this.configManager);
         this.statisticsCalculator = new StatisticsCalculator(this.db);

@@ -21,7 +21,8 @@ public class SQLite extends Database {
     private String SQLiteCreateDeathsTable = "CREATE TABLE IF NOT EXISTS deaths (" +
             "`id` INTEGER PRIMARY KEY," +
             "`player` varchar(32) NOT NULL," +
-            "`type` varchar(64) NOT NULL" +
+            "`type` varchar(64) NOT NULL," +
+            "`world` varchar(64) NOT NULL" +
             ");";
 
     private String SQLiteWorldNameTable = "CREATE TABLE IF NOT EXISTS worlds (" +
@@ -101,13 +102,13 @@ public class SQLite extends Database {
         return 0;
     }
 
-    public boolean addDeathToTable(String player, String type) {
+    public boolean addDeathToTable(String player, String type, String world) {
         Connection conn = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
         try {
             conn = getSQLConnection();
-            ps = conn.prepareStatement("INSERT INTO deaths (player, type) VALUES ('"+player+"', '"+type+"');");
+            ps = conn.prepareStatement("INSERT INTO deaths (player, type) VALUES ('"+player+"', '"+type+"', '"+world+"');");
             return ps.execute();
         } catch (SQLException e) {
             plugin.getLogger().log(Level.SEVERE, "Could not execute statement", e);
@@ -237,5 +238,31 @@ public class SQLite extends Database {
             }
         }
         return players;
+    }
+
+    public Integer getNumberOfDeathsForWorld(String world) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            conn = getSQLConnection();
+            ps = conn.prepareStatement("SELECT * FROM deaths WHERE world = '"+world+"';");
+            rs = ps.executeQuery();
+            int deaths = 0;
+            while (rs.next()) {
+                deaths++;
+            }
+            return deaths;
+        } catch (SQLException e) {
+            plugin.getLogger().log(Level.SEVERE, "Could not execute query", e);
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                if (conn != null) conn.close();
+            } catch(SQLException e) {
+                plugin.getLogger().log(Level.SEVERE, "Could not close SQL", e);
+            }
+        }
+        return 0;
     }
 }

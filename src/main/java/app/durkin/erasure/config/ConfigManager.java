@@ -23,6 +23,7 @@ public class ConfigManager {
         newConfig.put("resetTime", 2);
         newConfig.put("deleteOnReset", true);
         newConfig.put("messageOnDeath", true);
+        newConfig.put("maxDeaths", 1);
         setConfig(newConfig);
     }
 
@@ -41,6 +42,11 @@ public class ConfigManager {
         return (boolean) config.getOrDefault("messageOnDeath", null);
     }
 
+    public int getMaxNumberOfDeaths() throws IOException {
+        Map<String, Object> config = readConfig();
+        return (int) config.getOrDefault("maxDeaths", -1);
+    }
+
     public void setResetTimeInMinutes(int time) throws IOException {
         Map<String, Object> config = readConfig();
         config.put("resetTime", time);
@@ -56,6 +62,12 @@ public class ConfigManager {
     public void setMessageOnDeath(boolean message) throws IOException {
         Map<String, Object> config = readConfig();
         config.put("messageOnDeath", message);
+        setConfig(config);
+    }
+
+    public void setMaxNumberOfDeaths(int max) throws IOException {
+        Map<String, Object> config = readConfig();
+        config.put("maxDeaths", max);
         setConfig(config);
     }
 

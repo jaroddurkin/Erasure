@@ -90,6 +90,17 @@ public class ConfigCommand extends Command {
                 }
                 return true;
             }
+        } else if (args[2].equalsIgnoreCase("maxDeaths")) {
+            if (isNumber(args[3]) && Integer.parseInt(args[3]) > 0 && Integer.parseInt(args[3]) < 10001) {
+                try {
+                    this.configManager.setMaxNumberOfDeaths(Integer.parseInt(args[3]));
+                } catch(IOException e) {
+                    e.printStackTrace();
+                    Messenger.serverError(sender);
+                    return false;
+                }
+                return true;
+            }
         }
         Messenger.invalidArguments(sender);
         return false;
@@ -140,6 +151,21 @@ public class ConfigCommand extends Command {
                 return false;
             }
             Messenger.configValue(sender, Boolean.toString(message));
+            return true;
+        } else if (args[2].equalsIgnoreCase("maxDeaths")) {
+            int maxDeaths = -1;
+            try {
+                maxDeaths = this.configManager.getMaxNumberOfDeaths();
+            } catch(IOException e) {
+                e.printStackTrace();
+                Messenger.serverError(sender);
+                return false;
+            }
+            if (maxDeaths == -1) {
+                Messenger.serverError(sender);
+                return false;
+            }
+            Messenger.configValue(sender, Integer.toString(maxDeaths));
             return true;
         }
 
